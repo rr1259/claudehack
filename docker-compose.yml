@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  llm:
+    build:
+      context: ./python-llm
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL}
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+  backend:
+    build:
+      context: ./docker-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - API_PORT=3001
+      - DEMO_FS_PATH=/app/data/demo_fs
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL}
+      - LLM_BASE_URL=http://llm:8000
+      - FRONTEND_ORIGIN=${FRONTEND_ORIGIN:-http://localhost:5173}
+    volumes:
+      - demo_fs:/app/data/demo_fs
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').request({host:'127.0.0.1',port:3001,path:'/api/preview'},res=>process.exit(res.statusCode===200?0:1)).end()",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    depends_on:
+      llm:
+        condition: service_healthy
+volumes:
+  demo_fs:
+    driver: local

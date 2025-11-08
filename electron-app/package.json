@@ -1,0 +1,25 @@
+{
+  "name": "electron-file-organizer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Electron app (React + TypeScript) for organizing files via a Dockerized backend with AI preview.",
+  "scripts": {
+    "dev": "vite",
+    "build": "rimraf dist && vite build",
+    "preview": "vite preview --port 5173",
+    "typecheck": "tsc -p tsconfig.renderer.json --noEmit"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.3.1",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.4.5",
+    "vite": "^5.4.2"
+  }
+}

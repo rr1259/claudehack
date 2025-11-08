@@ -1,0 +1,7 @@
+Quarterly report draft.
+
+Pending sections:
+- Overview
+- Metrics
+- Risks
+
